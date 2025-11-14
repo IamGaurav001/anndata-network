@@ -1,8 +1,13 @@
 import React from 'react'
+import Navbar from './Navbar'
+import ImageSliderContainer from './ImageSliderContainer'
 
 const App = () => {
   return (
-    <div>App</div>
+    <>
+      <Navbar />
+      <ImageSliderContainer />
+    </>
   )
 }
 
