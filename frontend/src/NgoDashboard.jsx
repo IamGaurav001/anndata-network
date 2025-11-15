@@ -189,6 +189,7 @@ const NgoDashboard = ({ onLogout }) => {
             const token = localStorage.getItem('authToken');
             const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
 
@@ -222,6 +223,7 @@ const NgoDashboard = ({ onLogout }) => {
 
             const pendingResponse = await fetch(`${API_BASE_URL}/api/donations/pending`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
             const data = await pendingResponse.json();
@@ -232,6 +234,7 @@ const NgoDashboard = ({ onLogout }) => {
 
             const acceptedResponse = await fetch(`${API_BASE_URL}/api/donations/my-accepted`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
             const acceptedData = await acceptedResponse.json();
@@ -266,6 +269,7 @@ const NgoDashboard = ({ onLogout }) => {
         const token = localStorage.getItem('authToken');
         const response = await fetch(`${API_BASE_URL}/api/donations/${donationId}/update-location`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -308,6 +312,7 @@ const NgoDashboard = ({ onLogout }) => {
             const token = localStorage.getItem('authToken');
             const response = await fetch(`${API_BASE_URL}/api/donations/${donationId}/accept`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
 
@@ -344,6 +349,7 @@ const NgoDashboard = ({ onLogout }) => {
             const token = localStorage.getItem('authToken');
             const response = await fetch(`${API_BASE_URL}/api/donations/${id}/mark-picked`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
 

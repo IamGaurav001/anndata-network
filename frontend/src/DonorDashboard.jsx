@@ -172,6 +172,7 @@ const DonorDashboard = ({ onLogout }) => {
             const token = localStorage.getItem('authToken');
             const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
 
@@ -203,6 +204,7 @@ const DonorDashboard = ({ onLogout }) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/donations/my`, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
@@ -272,6 +274,7 @@ const DonorDashboard = ({ onLogout }) => {
             const token = localStorage.getItem('authToken');
             const response = await fetch(`${API_BASE_URL}/api/donations/create`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,

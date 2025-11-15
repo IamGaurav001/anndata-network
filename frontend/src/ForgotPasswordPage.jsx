@@ -54,6 +54,7 @@ const ForgotPasswordPage = ({ onBackToLogin }) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/auth/verify-security`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -109,6 +110,7 @@ const ForgotPasswordPage = ({ onBackToLogin }) => {
         try {
             const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
