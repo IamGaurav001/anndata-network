@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
     process.env.FRONTEND_URL,
     'http://localhost:5173',
+    'https://anndata-network.vercel.app'
 ];
 
 app.use(cors({
@@ -30,8 +31,12 @@ app.use(cors({
         }
     },
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
     methods: ['OPTIONS', 'POST', 'GET', 'PUT', 'DELETE'],
+    exposedHeaders: ['Set-Cookie'],
 }));
+
+app.options('*', cors());
 
 app.use(express.json());
 app.use(cookieParser());
