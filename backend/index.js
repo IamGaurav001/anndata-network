@@ -16,38 +16,26 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = [
-    process.env.FRONTEND_URL,
-    'http://localhost:5173',
-    'https://anndata-network.vercel.app'
-];
-
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-    methods: ['OPTIONS', 'POST', 'GET', 'PUT', 'DELETE'],
-    exposedHeaders: ['Set-Cookie'],
-}));
-
-app.options('*', cors());
+if (process.env.NODE_ENV === 'production') {
+    app.use(cors({
+        origin: ['https://anndata-network.vercel.app', process.env.FRONTEND_URL],
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    }));
+} else {
+    app.use(cors({ origin: true, credentials: true }));
+}
 
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/donations", donationRoutes);
-
 app.get("/api/auth/me", authMiddleware, getCurrentUser);
 
 app.get("/", (req, res) => {
-    res.send("API is running...");
+    res.json({ message: "API is running..." });
 });
 
 app.listen(PORT, () => {
