@@ -5,7 +5,8 @@ import { FormInput, MessageDisplay, PRIMARY_RED, DARK_CHARCOAL } from './Shared'
 // IMPORTANT: Replace this with your actual backend URL (e.g., http://localhost:5000)
 const API_BASE_URL = 'http://localhost:5000'; 
 
-const LogInPage = ({ onSwitchToSignup }) => {
+// Renamed onLoginSuccess to onAuthSuccess
+const LogInPage = ({ onSwitchToSignup, onAuthSuccess }) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -44,9 +45,15 @@ const LogInPage = ({ onSwitchToSignup }) => {
             const data = await response.json();
 
             if (response.ok) {
-                // Successful login (Status 200)
-                // In a real app, you would save the 'token' here (e.g., in localStorage)
-                console.log('Login successful. Token received:', data.token);
+                // Call the unified success handler
+                if (onAuthSuccess) {
+                    onAuthSuccess({ 
+                        token: data.token, 
+                        // Mock user data with default role for simulation
+                        user: data.user || { name: 'Donor', role: 'donor' } 
+                    });
+                }
+                
                 setMessage({ 
                     type: 'success', 
                     text: `Login successful! Welcome back, ${data.user.name || formData.email}.` 
@@ -69,7 +76,7 @@ const LogInPage = ({ onSwitchToSignup }) => {
     };
 
     const handleForgotPassword = () => {
-        // In a real application, this would redirect to a /forgot-password route
+        // ... (unchanged)
         console.log('Forgot Password clicked. Implement redirection or modal logic here.');
         setMessage({ type: 'error', text: 'Password reset feature is under development. Please contact support.' });
     };
