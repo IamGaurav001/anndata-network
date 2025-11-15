@@ -2,18 +2,18 @@ import React, { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './Navbar'
 import ImageSliderContainer from './ImageSliderContainer'
-<<<<<<< HEAD
+
 import MapPreviewSection from './MapPreviewSection'
 
-const App = () => {
-  return (
-    <>
-      <Navbar />
-      <ImageSliderContainer />
-      <MapPreviewSection />
-    </>
-  )
-=======
+// const App = () => {
+//   return (
+//     <>
+//       <Navbar />
+//       <ImageSliderContainer />
+//       <MapPreviewSection />
+//     </>
+//   )
+
 import LogInPage from './LogInPage'
 import SignUpPage from './SignUpPage'
 
@@ -108,9 +108,12 @@ const App = () => {
                     <AuthPage onClose={closeAuthModal} />
                 </Modal>
             )}
+            <Navbar />
+      <ImageSliderContainer />
+      <MapPreviewSection />
         </>
     )
->>>>>>> 76559eb6b59f57ce453b630264cb0c4ba8cf6bc3
+
 }
 
 export default App
