@@ -5,7 +5,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
-// Custom Icons
 const ngoIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
@@ -39,7 +38,6 @@ const StatCard = ({ icon: Icon, title, value, subtitle, color, bgColor }) => (
     </div>
 );
 
-// Auto-center map
 function MapBoundsHandler({ markers }) {
     const map = useMap();
 
@@ -55,7 +53,6 @@ function MapBoundsHandler({ markers }) {
     return null;
 }
 
-// Distance Calculation
 const calculateDistance = (loc1, loc2) => {
     if (!loc1 || !loc2 || loc1.lat === null || loc2.lat === null) return 'N/A';
     const R = 6371;
@@ -72,7 +69,6 @@ const calculateDistance = (loc1, loc2) => {
     return (R * c).toFixed(1);
 };
 
-// Interactive Map Component
 const InteractiveDonationMap = ({ ngoLocation, pendingDonations, onAcceptDonation }) => {
     if (!ngoLocation || ngoLocation.lat === null) {
         return (
@@ -95,7 +91,8 @@ const InteractiveDonationMap = ({ ngoLocation, pendingDonations, onAcceptDonatio
             center={[ngoLocation.lat, ngoLocation.lng]}
             zoom={13}
             scrollWheelZoom={true}
-            className="w-full h-[500px] rounded-lg shadow-md"
+            className="w-full h-[500px] rounded-lg shadow-md relative z-0"
+            style={{ zIndex: 0 }}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -437,7 +434,7 @@ const NgoDashboard = ({ onLogout }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                     <div className="lg:col-span-2">
-                        <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+                        <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-200 relative z-0">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-2xl font-bold flex items-center font-semibold" style={{ color: DARK_CHARCOAL }}>
                                     <Map className="w-6 h-6 mr-2 text-[#387ED1]" /> Nearby Donations
@@ -496,6 +493,17 @@ const NgoDashboard = ({ onLogout }) => {
                                             >
                                                 <p className="font-bold text-lg text-gray-800 font-semibold">{donation.foodType}</p>
                                                 <p className="text-sm text-gray-600 mt-1 font-semibold">Qty: {donation.quantity} units</p>
+                                                
+                                                {donation.donorId && (
+                                                    <div className="mt-2 pt-2 border-t border-orange-300">
+                                                        <p className="text-xs text-gray-700 font-semibold flex items-center">
+                                                            <Users className="w-3 h-3 mr-1 text-orange-600" />
+                                                            {donation.donorId.name}
+                                                        </p>
+                                                        <p className="text-xs text-gray-600 ml-4 font-semibold">{donation.donorId.email}</p>
+                                                    </div>
+                                                )}
+                                                
                                                 <p className="text-xs text-gray-500 flex items-center mt-2 font-semibold">
                                                     <Navigation className="w-3 h-3 mr-1 text-blue-500" />
                                                     <span className="font-bold">{distance} km away</span>
@@ -539,7 +547,17 @@ const NgoDashboard = ({ onLogout }) => {
                                                 {donation.status}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-gray-600 mb-4 font-semibold">Qty: {donation.quantity} units</p>
+                                        <p className="text-sm text-gray-600 mb-2 font-semibold">Qty: {donation.quantity} units</p>
+
+                                        {donation.donorId && (
+                                            <div className="mb-4 pb-3 border-b border-gray-200">
+                                                <p className="text-xs text-gray-700 font-semibold flex items-center mb-1">
+                                                    <Users className="w-3 h-3 mr-1 text-green-600" />
+                                                    {donation.donorId.name}
+                                                </p>
+                                                <p className="text-xs text-gray-600 ml-4 font-semibold">{donation.donorId.email}</p>
+                                            </div>
+                                        )}
 
                                         <div className="space-y-2">
                                             {donation.status !== 'picked' && (
