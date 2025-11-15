@@ -86,8 +86,8 @@ import connectDB from "./config/db.js";
 
 connectDB();
 
-const app = express();
-const PORT = process.env.PORT || 5000;
+// const app = express();
+// const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
     'http://localhost:5173', 
