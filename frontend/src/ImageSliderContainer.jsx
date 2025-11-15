@@ -1,27 +1,45 @@
 import React, { useState } from 'react';
-import ImagePagination from './ImagePagination';
+
+function ImagePagination({ currentSlideIndex, onDotClick, totalSlides }) {
+    return (
+        <div className="flex justify-center gap-2 py-4">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+                <button
+                    key={index}
+                    onClick={() => onDotClick(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        index === currentSlideIndex 
+                            ? 'bg-red-500 w-8' 
+                            : 'bg-gray-400 hover:bg-gray-300'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                />
+            ))}
+        </div>
+    );
+}
 
 function ImageSliderContainer() {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const sliderData = [
         {
-            imageUrl: "https://b.zmtcdn.com/data/o2_assets/a6df64139b380317b13dca3148ca9b0f1745347435.jpeg",
+            imageUrl: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&h=600&fit=crop",
             heading: "Help Ashok Deshmane give orphans of farmer suicides a loving home",
             buttonText: "Donate now",
-            buttonLink: "/login"
+            buttonLink: "#"
         },
         {
-            imageUrl: "https://b.zmtcdn.com/data/o2_assets/a6df64139b380317b13dca3148ca9b0f1745347435.jpeg",
+            imageUrl: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1200&h=600&fit=crop",
             heading: "Support our mission to rescue children from trafficking and terrors in red light areas",
             buttonText: "Donate now",
-            buttonLink: "/login"
+            buttonLink: "#"
         },
         {
-            imageUrl: "https://b.zmtcdn.com/data/o2_assets/a6df64139b380317b13dca3148ca9b0f1745347435.jpeg",
+            imageUrl: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1200&h=600&fit=crop",
             heading: "Another great cause needs your help today to build a better future",
             buttonText: "Learn More",
-            buttonLink: "/login"
+            buttonLink: "#"
         },
     ];
 
@@ -41,50 +59,87 @@ function ImageSliderContainer() {
         setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
     };
 
+    const getPrevIndex = () => (currentSlide - 1 + totalSlides) % totalSlides;
+    const getNextIndex = () => (currentSlide + 1) % totalSlides;
+
     const currentSlideContent = sliderData[currentSlide];
 
     return (
-        <div className="relative w-full h-[814px] overflow-hidden">
-            <img
-                src={currentSlideContent.imageUrl}
-                alt={`Slide ${currentSlide + 1}`}
-                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-            />
+        <div className="w-full py-[10%] bg-gray-100">
+            <div className="relative w-full max-w-7xl mx-auto px-4">
+                <div className="relative h-[400px] sm:h-[500px] flex items-center justify-center overflow-visible">
+                    
+                    {/* Previous Slide (Left) */}
+                    <div className="absolute left-0 w-[15%] h-[85%] opacity-40 transition-all duration-500 hidden lg:block">
+                        <img
+                            src={sliderData[getPrevIndex()].imageUrl}
+                            alt="Previous slide"
+                            className="w-full h-full object-cover rounded-lg"
+                        />
+                    </div>
 
-            <div className="absolute inset-0 bg-opacity-50"></div>
+                    {/* Current Slide (Center) */}
+                    <div className="relative w-full lg:w-[70%] h-full rounded-xl overflow-hidden shadow-2xl">
+                        <img
+                            src={currentSlideContent.imageUrl}
+                            alt={`Slide ${currentSlide + 1}`}
+                            className="w-full h-full object-cover transition-opacity duration-500"
+                        />
 
-            <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 lg:px-20 text-white z-10">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold max-w-2xl leading-tight mb-6">
-                    {currentSlideContent.heading}
-                </h2>
-                <a
-                    href={currentSlideContent.buttonLink}
-                    className="inline-block py-3 px-8 bg-[#387ED1] hover:bg-black transition-colors duration-300 rounded text-lg font-semibold shadow-md max-w-fit"
-                >
-                    {currentSlideContent.buttonText}
-                </a>
-            </div>
+                        {/* Dark Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
 
-            <div className="absolute bottom-4 left-0 right-0 z-20">
+                        {/* Content */}
+                        <div className="absolute inset-0 flex flex-col justify-center px-10 sm:px-12 lg:px-24 text-white z-10">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold max-w-2xl leading-tight mb-6">
+                                {currentSlideContent.heading}
+                            </h2>
+                            <a
+                                href={currentSlideContent.buttonLink}
+                                className="inline-block py-3 px-8 bg-red-600 hover:bg-red-700 transition-colors duration-300 rounded-lg text-base sm:text-lg font-semibold shadow-lg max-w-fit"
+                            >
+                                {currentSlideContent.buttonText}
+                            </a>
+                        </div>
+
+                        {/* Navigation Arrows */}
+                        <button
+                            onClick={prevSlide}
+                            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition z-20"
+                            aria-label="Previous slide"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={nextSlide}
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition z-20"
+                            aria-label="Next slide"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* Next Slide (Right) */}
+                    <div className="absolute right-0 w-[15%] h-[85%] opacity-40 transition-all duration-500 hidden lg:block">
+                        <img
+                            src={sliderData[getNextIndex()].imageUrl}
+                            alt="Next slide"
+                            className="w-full h-full object-cover rounded-lg"
+                        />
+                    </div>
+                </div>
+
+                {/* Pagination Dots */}
                 <ImagePagination
                     currentSlideIndex={currentSlide}
                     onDotClick={goToSlide}
                     totalSlides={totalSlides}
                 />
             </div>
-
-            <button
-                onClick={prevSlide}
-                className="absolute left-4 cursor-pointer top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full hover:bg-opacity-75 transition z-20"
-            >
-                &lt;
-            </button>
-            <button
-                onClick={nextSlide}
-                className="absolute right-4 cursor-pointer top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full hover:bg-opacity-75 transition z-20"
-            >
-                &gt;
-            </button>
         </div>
     );
 }
