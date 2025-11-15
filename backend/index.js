@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -72,7 +72,7 @@ const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`🚀 Server + Socket.IO running on port ${PORT}`);
 });
-=======
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -121,4 +121,4 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
->>>>>>> 76559eb6b59f57ce453b630264cb0c4ba8cf6bc3
+
